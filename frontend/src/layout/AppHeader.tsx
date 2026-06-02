@@ -1,13 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import NotificationDropdown from "../components/header/NotificationDropdown";
 import UserDropdown from "../components/header/UserDropdown";
 import { useSidebar } from "../context/SidebarContext";
+import { logout, selectLoggedInUser } from "../store/authSlice";
+import { baseApi } from "../store/services/baseApi";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+  const loggedInUser = useSelector(selectLoggedInUser);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
@@ -39,6 +46,12 @@ const AppHeader: React.FC = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(baseApi.util.resetApiState());
+    navigate("/signin", { replace: true });
+  };
 
   return (
     <header className="sticky top-0 flex w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
@@ -165,7 +178,7 @@ const AppHeader: React.FC = () => {
             {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}
-          <UserDropdown />
+          <UserDropdown user={loggedInUser} onLogout={handleLogout} />
         </div>
       </div>
     </header>

@@ -35,10 +35,26 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: false,
     },
+
+    position: {
+      type: String,
+      enum: [
+        "PRESIDENT",
+        "VICE_PRESIDENT",
+        "TREASURER",
+        "SECRETARY",
+        "SUB_SECRETARY",
+        "GENERAL_MEMBER",
+      ],
+      default: "GENERAL_MEMBER",
+      required: true,
+    },
+
     profileImage: {
       type: String,
       default: "/images/user/owner.jpg",
     },
+
     role: {
       type: String,
       enum: ["SuperAdmin", "Admin", "Member"],

@@ -1,10 +1,16 @@
 import { useModal } from "../../hooks/useModal";
+import { IUser } from "../../interfaces";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 
-export default function UserInfoCard() {
+interface UserInfoCardProps {
+  user: IUser | null;
+  onSave: () => void;
+}
+
+export default function UserInfoCard({ user, onSave }: UserInfoCardProps) {
   const { isOpen, openModal, closeModal } = useModal();
   const handleSave = () => {
     // Handle save logic here
@@ -24,33 +30,37 @@ export default function UserInfoCard() {
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                 First Name
               </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">Musharof</p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.firstName}
+              </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                 Last Name
               </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">Chowdhury</p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.lastName}
+              </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                 Email address
               </p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                randomuser@pimjo.com
-              </p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">{user?.email}</p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Phone</p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">+09 363 398 46</p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {user?.phoneNumber}
+              </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">Bio</p>
-              <p className="text-sm font-medium text-gray-800 dark:text-white/90">Team Manager</p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">{user?.role}</p>
             </div>
           </div>
         </div>
@@ -125,27 +135,27 @@ export default function UserInfoCard() {
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                   <div className="col-span-2 lg:col-span-1">
                     <Label>First Name</Label>
-                    <Input type="text" value="Musharof" />
+                    <Input type="text" value={user?.firstName || ""} />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Last Name</Label>
-                    <Input type="text" value="Chowdhury" />
+                    <Input type="text" value={user?.lastName || ""} />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Email Address</Label>
-                    <Input type="text" value="randomuser@pimjo.com" />
+                    <Input type="text" value={user?.email || ""} />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Phone</Label>
-                    <Input type="text" value="+09 363 398 46" />
+                    <Input type="text" value={user?.phoneNumber || ""} />
                   </div>
 
                   <div className="col-span-2">
                     <Label>Bio</Label>
-                    <Input type="text" value="Team Manager" />
+                    <Input type="text" value={user?.role || ""} />
                   </div>
                 </div>
               </div>

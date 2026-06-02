@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
+import { logout, selectLoggedInUser } from "../../store/authSlice";
+import { baseApi } from "../../store/services/baseApi";
 import { ThemeToggleButton } from "../common/ThemeToggleButton";
 import NotificationDropdown from "./NotificationDropdown";
 import UserDropdown from "./UserDropdown";
@@ -9,11 +12,23 @@ interface HeaderProps {
   onClick?: () => void; // Optional function that takes no arguments and returns void
   onToggle: () => void;
 }
+
 const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const loggedInUser = useSelector(selectLoggedInUser);
 
   const toggleApplicationMenu = () => {
     setApplicationMenuOpen(!isApplicationMenuOpen);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(baseApi.util.resetApiState());
+    navigate("/signin", { replace: true });
   };
 
   return (
@@ -159,7 +174,7 @@ const Header: React.FC<HeaderProps> = ({ onClick, onToggle }) => {
             {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}
-          <UserDropdown />
+          <UserDropdown user={loggedInUser} onLogout={handleLogout} />
         </div>
       </div>
     </header>

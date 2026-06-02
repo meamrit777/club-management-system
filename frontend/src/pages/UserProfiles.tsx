@@ -1,10 +1,14 @@
+import { useSelector } from "react-redux";
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import PageMeta from "../components/common/PageMeta";
 import UserAddressCard from "../components/UserProfile/UserAddressCard";
 import UserInfoCard from "../components/UserProfile/UserInfoCard";
 import UserMetaCard from "../components/UserProfile/UserMetaCard";
+import { selectLoggedInUser } from "../store/authSlice";
 
 export default function UserProfiles() {
+  const loggedInUser = useSelector(selectLoggedInUser);
+
   return (
     <>
       <PageMeta
@@ -17,9 +21,9 @@ export default function UserProfiles() {
           Profile
         </h3>
         <div className="space-y-6">
-          <UserMetaCard />
-          <UserInfoCard />
-          <UserAddressCard />
+          <UserMetaCard user={loggedInUser} onSave={() => {}} />
+          <UserInfoCard user={loggedInUser} onSave={() => {}} />
+          <UserAddressCard user={loggedInUser} />
         </div>
       </div>
     </>
