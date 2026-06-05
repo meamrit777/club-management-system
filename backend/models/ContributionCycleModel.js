@@ -30,7 +30,7 @@ const ContributionCycleSchema = new mongoose.Schema(
       default: "open",
       index: true,
       // open   = admin can still record payments
-      // closed = month is finalised, no further edits
+      // closed = month is finalized, no further edits
     },
 
     // ── Amount & Era Snapshot
