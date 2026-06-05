@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 /**
-    
  * Tracks every significant admin action in the system.
  *
  * Separate from the Transaction ledger:
@@ -12,7 +11,7 @@ import mongoose from "mongoose";
  */
 
 const AuditLogSchema = new mongoose.Schema({
-  // ── What Happened ───────────────────────────────────────────────────────
+  // ── What Happened
   action: {
     type: String,
     required: [true, "action is required"],
@@ -30,7 +29,7 @@ const AuditLogSchema = new mongoose.Schema({
     //   SETTINGS_CHANGED
   },
 
-  // ── Who Did It ──────────────────────────────────────────────────────────
+  // ── Who Did It
   performedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -38,7 +37,7 @@ const AuditLogSchema = new mongoose.Schema({
     index: true,
   },
 
-  // ── What Was Affected ───────────────────────────────────────────────────
+  // ── What Was Affected
   targetType: {
     type: String,
     required: [true, "targetType is required"],
@@ -68,7 +67,7 @@ const AuditLogSchema = new mongoose.Schema({
     // e.g., "Loan ₹50,000 — Rahul Singh (EMI 12 months)"
   },
 
-  // ── Before / After Snapshots ────────────────────────────────────────────
+  // ── Before / After Snapshots
   oldValue: {
     type: mongoose.Schema.Types.Mixed,
     default: null,
@@ -82,7 +81,7 @@ const AuditLogSchema = new mongoose.Schema({
     // e.g., { status: "active", disbursedDate: "2025-06-01" }
   },
 
-  // ── Request Context (for security audit) ───────────────────────────────
+  // ── Request Context (for security audit)
   ipAddress: {
     type: String,
     default: null,
@@ -93,14 +92,14 @@ const AuditLogSchema = new mongoose.Schema({
     // Browser/app user-agent string — helps identify if it was web or mobile
   },
 
-  // ── When ─────────────────────────────────────────────────────────────────
+  // ── When
   timestamp: {
     type: Date,
     default: Date.now,
     index: true,
   },
 
-  // ── Optional Note ────────────────────────────────────────────────────────
+  // ── Optional Note
   note: {
     type: String,
     trim: true,
@@ -110,7 +109,7 @@ const AuditLogSchema = new mongoose.Schema({
   },
 });
 
-// ── Indexes ──────────────────────────────────────────────────────────────────
+// ── Indexes
 AuditLogSchema.index({ performedBy: 1, timestamp: -1 });
 AuditLogSchema.index({ targetType: 1, targetId: 1 });
 AuditLogSchema.index({ action: 1 });
