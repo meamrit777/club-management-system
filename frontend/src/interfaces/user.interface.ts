@@ -9,6 +9,8 @@ export interface IUser {
   email: string;
   phoneNumber: string;
 
+  position: string;
+
   password: string;
 
   role: UserRole;

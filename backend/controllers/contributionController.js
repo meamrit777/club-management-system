@@ -97,7 +97,7 @@ export const closeCycle = asyncHandler(async (req, res) => {
   if (!cycle) throw new Error("Cycle not found");
   if (cycle.status === "closed") throw new Error("Cycle is already closed");
 
-  // Summarise collections
+  // Summarize collections
   const summary = await Contribution.aggregate([
     { $match: { cycleId: cycle._id } },
     {
