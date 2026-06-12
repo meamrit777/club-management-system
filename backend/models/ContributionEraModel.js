@@ -65,23 +65,25 @@ const ContributionEraSchema = new mongoose.Schema(
 );
 
 // ── Auto-close previous era when new one is saved as current
-ContributionEraSchema.pre("save", async function (next) {
-  if (this.isNew && this.isCurrent) {
-    // Find the previous current era and close it
-    const previous = await mongoose.model("ContributionEra").findOne({
-      isCurrent: true,
-      _id: { $ne: this._id },
-    });
+ContributionEraSchema.pre("save", async function () {
+  if (!this.isNew || !this.isCurrent) return;
 
-    if (previous) {
-      // effectiveTo = the month BEFORE this new era starts
-      previous.isCurrent = false;
-      previous.effectiveTo = getPreviousMonth(this.effectiveFrom);
-      // Use direct save (bypasses the pre-save hook on the other doc)
-      await previous.save();
-    }
+  const previous = await mongoose.model("ContributionEra").findOne({
+    isCurrent: true,
+    _id: { $ne: this._id },
+  });
+
+  if (previous) {
+    await mongoose.model("ContributionEra").updateOne(
+      { _id: previous._id },
+      {
+        $set: {
+          isCurrent: false,
+          effectiveTo: getPreviousMonth(this.effectiveFrom),
+        },
+      },
+    );
   }
-  next();
 });
 
 // ── Helper: get YYYY-MM of the month before a given YYYY-MM

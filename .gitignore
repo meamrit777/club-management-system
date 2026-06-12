@@ -18,3 +18,5 @@ build/
 # editor files
 .vscode/
 .idea/
+
+backend/seeds/seeder.js
